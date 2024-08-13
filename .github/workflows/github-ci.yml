@@ -1,0 +1,69 @@
+# name: Sync to CodeCommit
+
+# on:
+#   push:
+#     branches:
+#       - main # 監視するブランチを指定
+
+# permissions:
+#   id-token: write
+#   contents: read
+
+# jobs:
+#   sync:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Git clone the repository # リポジトリの内容をクローン。後続でアクセスできるようになる。 fetch-depth:0は完全なクローンを意味する
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+
+#       - name: configure aws credentials # 認証認可のための部分。role-to-assumeで認証後に引き受けるIAMロールが指定される
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+#           aws-region: ${{ vars.AWS_REGION }}
+
+#       - name: Configure git to use AWS CodeCommit credentials
+#         run: |
+#           git config --global credential.helper '!aws codecommit credential-helper $@'
+#           git config --global credential.UseHttpPath true
+
+#       - name: Add CodeCommit remote
+#         run: |
+#           git remote add codecommit https://git-codecommit.${{ vars.AWS_REGION }}.amazonaws.com/v1/repos/${{ vars.AWS_CODECOMMIT }}
+
+#       - name: push to CodeCommit
+#         run: |
+#           git push codecommit main
+
+name: Build and Deploy to ECS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    # needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Install SAM CLI
+        run: |
+          pip install aws-sam-cli
+      - name: SAM build
+        run: sam build
+        working-directory: ./temp-hello-world
+      - name: SAM deploy
+        run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+        working-directory: ./temp-hello-world
