@@ -162,7 +162,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
         - arn:aws:iam::aws:policy/AmazonECS_FullAccess
       Policies:
-        - PolicyName: ECRandECSAccess
+        - PolicyName: ECRandECSandCloudFormationAccess
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -180,8 +180,11 @@ Resources:
                   - ecs:DescribeTaskDefinition
                   - ecs:UpdateService
                   - ecs:DescribeServices
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:DescribeStacks
                 Resource: '*'
-
 
 Outputs:
   VpcId:
