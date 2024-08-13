@@ -227,6 +227,10 @@ Resources:
                   - lambda:GetFunction
                   - lambda:DeleteFunction
                 Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: '*'
 
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
