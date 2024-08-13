@@ -34,7 +34,6 @@ Resources:
 
   LambdaFunction1:
     Type: AWS::Serverless::Function
-    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello.lambdaHandler
@@ -60,7 +59,6 @@ Resources:
 
   LambdaFunction2:
     Type: AWS::Serverless::Function
-    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello2.lambdaHandler

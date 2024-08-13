@@ -182,6 +182,25 @@ make iac-role-deploy
 
 </details>
 
+<details>
+<summary> 2. githubActionsに必要な環境変数を設定</summary>
+
+- 添付の３つの環境変数を設定する
+
+![](./assets/images/githubactions1.png)
+
+</details>
+
+<details>
+<summary> 3. githubへPush</summary>
+
+- github-ci.ymlに必要事項がかけたらPush
+- 今回はS3バケット名は環境変数で指定＆毎回クリーンナップするようにした（無限にUPDATE毎に増えていくので）
+
+</details>
+
+
+
 
 # 備考
 [samの記事1](https://zenn.dev/toccasystems/articles/aws-sam-setup?redirected=1)
