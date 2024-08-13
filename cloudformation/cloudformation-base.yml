@@ -164,7 +164,7 @@ Resources:
         - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
       Policies:
-        - PolicyName: ECRandECSandCloudFormationAccess
+        - PolicyName: ECRandECSAccess
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -182,10 +182,38 @@ Resources:
                   - ecs:DescribeTaskDefinition
                   - ecs:UpdateService
                   - ecs:DescribeServices
+                Resource: '*'
+        - PolicyName: CloudFormationCustom
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
                   - cloudformation:CreateChangeSet
                   - cloudformation:DescribeChangeSet
                   - cloudformation:ExecuteChangeSet
                   - cloudformation:DescribeStacks
+                Resource: '*'
+        - PolicyName: IAMRoleManagement
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - iam:CreateRole
+                  - iam:PutRolePolicy
+                  - iam:AttachRolePolicy
+                  - iam:DetachRolePolicy
+                Resource: '*'
+        - PolicyName: TaggingOperations
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - tag:GetResources
+                  - tag:TagResources
+                  - tag:UntagResources
                 Resource: '*'
 
 Outputs:
