@@ -244,6 +244,7 @@ Resources:
                   - apigateway:PUT
                   - apigateway:DELETE
                   - apigateway:PATCH
+                  - apigateway:UpdateRestApiPolicy # この行を追加
                 Resource:
                   - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
                   - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
