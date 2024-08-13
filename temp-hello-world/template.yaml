@@ -35,7 +35,7 @@ Resources:
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
     Properties:
-#      RoleName: ogata-lambdaExecutionRole
+      #      RoleName: ogata-lambdaExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -94,7 +94,7 @@ Resources:
       Architectures:
         - x86_64
       Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
-#      Role: arn:aws:iam::157094121738:role/ogata-lambdaExecutionRole
+      #      Role: arn:aws:iam::157094121738:role/ogata-lambdaExecutionRole
       Events:
         HelloWorld:
           Type: Api
@@ -115,6 +115,6 @@ Outputs:
   HelloWorldApi:
     Description: 'API Gateway endpoint URL for Prod stage for Hello World function'
     Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/'
-  # HelloWorldFunctionIamRole:
-  #   Description: 'Implicit IAM Role created by template.yaml'
-  #   Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
+  LambdaExecutionRoleArn:
+    Description: 'ARN of the Lambda execution role'
+    Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
