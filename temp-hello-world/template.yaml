@@ -67,10 +67,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role:
-        Fn::GetAtt:
-          - LambdaExecutionRoleWithDynamoDB
-          - Arn
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
@@ -97,10 +94,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role:
-        Fn::GetAtt:
-          - LambdaExecutionRoleWithDynamoDB
-          - Arn
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
