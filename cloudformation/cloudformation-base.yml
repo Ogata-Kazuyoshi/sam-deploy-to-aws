@@ -226,6 +226,8 @@ Resources:
                   - lambda:UpdateFunctionConfiguration
                   - lambda:GetFunction
                   - lambda:DeleteFunction
+                  - lambda:TagResource # この行を追加
+                  - lambda:UntagResource # この行も追加（将来的に必要になる可能性があります）
                 Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
               - Effect: Allow
                 Action:
