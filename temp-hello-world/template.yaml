@@ -18,19 +18,19 @@ Resources:
         ResourcePolicy:
           CustomStatements:
             - Effect: Allow
-              Principal: "*"
+              Principal: '*'
               Action: execute-api:Invoke
               Resource: execute-api:/*
               Condition:
                 IpAddress:
-                  aws:SourceIp: "13.114.22.14/32"
+                  aws:SourceIp: '13.114.22.14/32'
             - Effect: Deny
-              Principal: "*"
+              Principal: '*'
               Action: execute-api:Invoke
               Resource: execute-api:/*
               Condition:
                 NotIpAddress:
-                  aws:SourceIp: "13.114.22.14/32"
+                  aws:SourceIp: '13.114.22.14/32'
 
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
@@ -59,6 +59,7 @@ Resources:
 
   LambdaFunction1:
     Type: AWS::Serverless::Function
+    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello.lambdaHandler
@@ -77,13 +78,14 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
-        Target: "es2020"
+        Target: 'es2020'
         Sourcemap: true
         EntryPoints:
           - controller/hello.ts
 
   LambdaFunction2:
     Type: AWS::Serverless::Function
+    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello2.lambdaHandler
@@ -102,18 +104,18 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         Minify: true
-        Target: "es2020"
+        Target: 'es2020'
         Sourcemap: true
         EntryPoints:
           - controller/hello2.ts
 
 Outputs:
   HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-#  HelloWorldFunction:
-#    Description: "Hello World Lambda Function ARN"
-#    Value: !GetAtt HelloWorldFunction.Arn
+    Description: 'API Gateway endpoint URL for Prod stage for Hello World function'
+    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/'
+  #  HelloWorldFunction:
+  #    Description: "Hello World Lambda Function ARN"
+  #    Value: !GetAtt HelloWorldFunction.Arn
   HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created by template.yaml"
+    Description: 'Implicit IAM Role created by template.yaml'
     Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
