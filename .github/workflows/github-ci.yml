@@ -68,9 +68,15 @@ jobs:
         run: |
           pip install aws-sam-cli
 
-      - name: Clean S3 bucket
+      - name: Clean S3 bucket if exists
         run: |
-          aws s3 rm s3://${{ vars.SAM_BUCKET_NAME }} --recursive
+          if aws s3 ls "s3://${{ vars.SAM_BUCKET_NAME }}" 2>&1 | grep -q 'NoSuchBucket'
+          then
+            echo "バケット ${{ vars.SAM_BUCKET_NAME }} は存在しません。クリーンアップをスキップします。"
+          else
+            echo "バケット ${{ vars.SAM_BUCKET_NAME }} が存在します。クリーンアップを実行します。"
+            aws s3 rm s3://${{ vars.SAM_BUCKET_NAME }} --recursive
+          fi
 
       - name: Install SAM CLI
         run: |

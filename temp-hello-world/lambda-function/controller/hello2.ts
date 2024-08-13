@@ -17,7 +17,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: `github-ci.ymlでお掃除.こっちはAPIゲートウェイを追加した ${message}`,
+                message: `Yess!!!!!github-ci.ymlでお掃除.こっちはAPIゲートウェイを追加した ${message}`,
             }),
         };
     } catch (err) {

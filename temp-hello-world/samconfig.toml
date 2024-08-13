@@ -23,6 +23,7 @@ region = "ap-northeast-1"
 disable_rollback = true
 image_repositories = []
 force_upload = true
+s3_bucket = "my-custom-bucket-name"
 
 [default.package.parameters]
 resolve_s3 = true
