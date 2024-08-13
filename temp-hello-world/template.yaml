@@ -35,7 +35,7 @@ Resources:
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: ogata-lambdaExecutionRole
+      # RoleName: ogata-lambdaExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
