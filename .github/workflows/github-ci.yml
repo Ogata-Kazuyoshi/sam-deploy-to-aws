@@ -78,6 +78,16 @@ jobs:
             aws s3 rm s3://${{ vars.SAM_BUCKET_NAME }} --recursive
           fi
 
+      - name: Create S3 bucket if not exists
+        run: |
+          if ! aws s3 ls "s3://${{ vars.SAM_BUCKET_NAME }}" 2>&1 | grep -q 'NoSuchBucket'
+          then
+            echo "バケット ${{ vars.SAM_BUCKET_NAME }} は既に存在します。"
+          else
+            echo "バケット ${{ vars.SAM_BUCKET_NAME }} が存在しません。作成します。"
+            aws s3 mb s3://${{ vars.SAM_BUCKET_NAME }} --region ${{ vars.AWS_REGION }}
+          fi
+
       - name: Install SAM CLI
         run: |
           pip install aws-sam-cli
@@ -85,5 +95,5 @@ jobs:
         run: sam build
         working-directory: ./temp-hello-world
       - name: SAM deploy
-        run: sam deploy --stack-name temp-ogata-sam --s3-bucket ${{ vars.SAM_BUCKET_NAME }} --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset
+        run: sam deploy --stack-name temp-ogata-sam --s3-bucket ${{ vars.SAM_BUCKET_NAME }} --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset --resolve-s3
         working-directory: ./temp-hello-world
