@@ -230,6 +230,7 @@ Resources:
                   - lambda:UntagResource # この行も追加（将来的に必要になる可能性があります）
                   - lambda:AddPermission # この行を追加
                   - lambda:RemovePermission # この行も追加（将来的に必要になる可能性があります）
+                  - lambda:ListTags # この行を追加
                 Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
               - Effect: Allow
                 Action:
