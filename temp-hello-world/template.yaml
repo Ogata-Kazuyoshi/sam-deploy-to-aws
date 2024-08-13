@@ -86,6 +86,6 @@ Outputs:
   HelloWorldApi:
     Description: 'API Gateway endpoint URL for Prod stage for Hello World function'
     Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/'
-  HelloWorldFunctionIamRole:
-    Description: 'Implicit IAM Role created by template.yaml'
-    Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
+  # HelloWorldFunctionIamRole:
+  #   Description: 'Implicit IAM Role created by template.yaml'
+  #   Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
