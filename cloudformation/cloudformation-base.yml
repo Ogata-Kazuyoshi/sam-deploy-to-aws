@@ -215,6 +215,18 @@ Resources:
                   - tag:TagResources
                   - tag:UntagResources
                 Resource: '*'
+        - PolicyName: LambdaCreateUpdatePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:CreateFunction
+                  - lambda:UpdateFunctionCode
+                  - lambda:UpdateFunctionConfiguration
+                  - lambda:GetFunction
+                  - lambda:DeleteFunction
+                Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:*'
 
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
@@ -240,7 +252,6 @@ Resources:
                   - dynamodb:GetItem
                   - dynamodb:Scan
                 Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*'
-
 
 Outputs:
   VpcId:
