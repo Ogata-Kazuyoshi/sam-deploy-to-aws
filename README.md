@@ -6,8 +6,7 @@
 
 - [今回のシステム概要図](#今回のシステム概要図)
 - [samのセットアップ、ローカル確認](#samのセットアップ、ローカル確認)
-- [SMAを使って初回deploy](#SMAを使って初回deploy)
-- [リリース済みのリソースのUPDATE](#リリース済みのリソースのUPDATE)
+- [コマンドラインからDeploy＆UPDATE](#コマンドラインからDeploy＆UPDATE)
 - [作成したリソースの削除](#作成したリソースの削除)
 - [備考](#備考)
 - [参考](#参考)
@@ -72,65 +71,61 @@ sam local start-api
 
 </details>
 
-
-# SMAを使って初回deploy
+# コマンドラインからDeploy＆UPDATE
 
 <details>
-<summary> 1. 認証情報を登録</summary>
+<summary> 0. 認証情報を登録</summary>
 
 - ToroHandsOnのtemporaryのアクセスキーをターミナルの環境変数に設定
 - リージョンを東京に設定
+- samconfig.tomlを設定すること。
 
 ```zh
 export AWS_DEFAULT_REGION=ap-northeast-1
 ```
 
-</details>
+```
+# More information about the configuration file can be found here:
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-config.html
+version = 0.1
 
-<details>
-<summary> 2. sam buildを実行</summary>
+[default]
+[default.global.parameters]
+stack_name = "temp-ogata-sam"
 
-- ターミナルでsam buildを実行
+[default.build.parameters]
+cached = true
+parallel = true
 
-```zh
-sam build
+[default.validate.parameters]
+lint = true
+
+[default.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+resolve_s3 = true
+stack_name = "temp-ogata-sam"
+s3_prefix = "temp-ogata-sam"
+region = "ap-northeast-1"
+disable_rollback = true
+image_repositories = []
+force_upload = true
+
+[default.package.parameters]
+resolve_s3 = true
+
+[default.sync.parameters]
+watch = true
+
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+
+[default.local_start_lambda.parameters]
+warm_containers = "EAGER"
+
 ```
 
 </details>
-
-<details>
-<summary> 3. sam deployをする</summary>
-
-- ターミナルで sam deployを実行
-- 全てYesでOK
-- Deploy this changeset? [y/N]: yと聞かれるのでyesでAPIゲートウェイ、Lambdaをデプロイ
-- デフォルトで作成されるIAMロールは、添付のようにLambdaBasicがアタッチされている
-
-```zh
-sam deploy --guided
-```
-
-![](./assets/images/aws1.png)
-
-</details>
-
-<details>
-<summary> 4. deployされたAPIゲートウェイへアクセスする</summary>
-
-- deploy完了時に、下記の表示がターミナルである。このドメインへアクセスして問題なくデプロイされていることを確認する
-- デフォルトで、ステージはstageとprodが出来上がっているよう。添付参照
-
-```zh
-Key                 HelloWorldApi                                                                                                                                                                     
-Description         API Gateway endpoint URL for Prod stage for Hello World function                                                                                                                  
-Value               https://pivy15kyd1.execute-api.ap-northeast-1.amazonaws.com/Prod/hello/   
-```
-
-![](./assets/images/aws2.png)
-
-</details>
-
-# リリース済みのリソースのUPDATE
 
 <details>
 <summary> 1. 下記コマンドを実行</summary>
@@ -144,7 +139,7 @@ sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
 </details>
 
 <details>
-<summary> 2. そもそも --guide使わずに、いきなりリソース作りながらデプロイする</summary>
+<summary> 2. make sam-deployでデプロイ</summary>
 
 - 下記を実施しても、APIGatewayのエンドポイントは変わらないので、実質Updateできる
 - 最初に、samconfig.tomlの「stack_name, s3_prefix, region」など対話中に聞かれる値を設定しておく
