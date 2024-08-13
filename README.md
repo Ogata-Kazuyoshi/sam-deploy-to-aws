@@ -8,6 +8,7 @@
 - [samのセットアップ、ローカル確認](#samのセットアップ、ローカル確認)
 - [コマンドラインからDeploy＆UPDATE](#コマンドラインからDeploy＆UPDATE)
 - [作成したリソースの削除](#作成したリソースの削除)
+- [githubActionsからのdeploy(これだけで十分)](#githubActionsからのdeploy(これだけで十分))
 - [備考](#備考)
 - [参考](#参考)
 </details>
@@ -161,6 +162,22 @@ sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
 
 ```zh
 sam delete --stack-name <スタックネーム>
+```
+
+</details>
+
+# githubActionsからのdeploy(これだけで十分)
+
+
+<details>
+<summary> 1. ルートディレクトリーで必要なIAMロールの作成</summary>
+
+- GithubActionsで認可後に渡すAssumeロール、ラムダ関数にアタッチするロールを事前に作成
+- 「1.AWS_DEFAULT_REGION, 2.GITHUB_ACCOUNT, 3.GITHUB_REPOSITORY」と、IAMアクセスキーをexportして環境変数に設定
+- make iac-role-deployでデプロイする
+
+```zh
+make iac-role-deploy
 ```
 
 </details>

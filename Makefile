@@ -1,11 +1,13 @@
-iac-base-deploy:
-	aws cloudformation create-stack --stack-name ogata-cloudformation-base \
-	--template-body file://cloudformation/cloudformation-base.yml \
+iac-role-deploy:
+	aws cloudformation create-stack --stack-name ogata-cloudformation-iam-role \
+	--template-body file://cloudformation/cloudformation-iam-role.yml \
 	--capabilities CAPABILITY_NAMED_IAM \
-	--parameters ParameterKey=GithubRepository,ParameterValue=$(GITHUB_REPOSITORY) \
+	--parameters ParameterKey=GithubAccount,ParameterValue=$(GITHUB_ACCOUNT) \
+	             ParameterKey=GithubRepository,ParameterValue=$(GITHUB_REPOSITORY) \
 
-iac-base-update:
-	aws cloudformation update-stack --stack-name ogata-cloudformation-base \
-	--template-body file://cloudformation/cloudformation-base.yml \
+iac-role-update:
+	aws cloudformation update-stack --stack-name ogata-cloudformation-iam-role \
+	--template-body file://cloudformation/cloudformation-iam-role.yml \
 	--capabilities CAPABILITY_NAMED_IAM \
-	--parameters ParameterKey=GithubRepository,ParameterValue=$(GITHUB_REPOSITORY) \
+	--parameters ParameterKey=GithubAccount,ParameterValue=$(GITHUB_ACCOUNT) \
+	             ParameterKey=GithubRepository,ParameterValue=$(GITHUB_REPOSITORY) \
