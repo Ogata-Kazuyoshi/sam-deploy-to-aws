@@ -233,31 +233,18 @@ Resources:
                 Action:
                   - iam:PassRole
                 Resource: '*'
-
-  LambdaExecutionRoleWithDynamoDB:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: DynamoDBAccess
+        - PolicyName: APIGatewayManagementPolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
-                  - dynamodb:CreateTable
-                  - dynamodb:PutItem
-                  - dynamodb:GetItem
-                  - dynamodb:Scan
-                Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*'
+                  - apigateway:GET
+                  - apigateway:POST
+                  - apigateway:PUT
+                  - apigateway:DELETE
+                  - apigateway:PATCH
+                Resource: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
 
 Outputs:
   VpcId:
@@ -295,9 +282,3 @@ Outputs:
     Value: !GetAtt GithubActionsRole.Arn
     Export:
       Name: GithubActionsRoleArn
-
-  LambdaRole:
-    Description: ARN of the IAM Role for Lambda function
-    Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
-    Export:
-      Name: LambdaExecutionRoleWithDynamoDBArn

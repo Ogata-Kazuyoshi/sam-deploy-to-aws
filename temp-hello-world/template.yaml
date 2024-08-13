@@ -35,6 +35,7 @@ Resources:
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
     Properties:
+    RoleName: ogata-lambdaExecutionRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -67,7 +68,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::157094121738:role/ogata-cloudformation-base-LambdaExecutionRoleWithDy-MCo77ITuvbYs
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
@@ -94,7 +95,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::157094121738:role/ogata-cloudformation-base-LambdaExecutionRoleWithDy-MCo77ITuvbYs
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
