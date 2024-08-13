@@ -246,6 +246,32 @@ Resources:
                   - apigateway:PATCH
                 Resource: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
 
+  LambdaExecutionRoleWithDynamoDB:
+    Type: AWS::IAM::Role
+    Properties:
+      # RoleName: ogata-lambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:CreateTable
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*'
+
 Outputs:
   VpcId:
     Description: VPC ID
@@ -282,3 +308,8 @@ Outputs:
     Value: !GetAtt GithubActionsRole.Arn
     Export:
       Name: GithubActionsRoleArn
+  LambdaExecutionRoleWithDynamoDBArn:
+    Description: ARN of the IAM Role for lambda role
+    Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
+    Export:
+      Name: LambdaExecutionRoleWithDynamoDBArn
