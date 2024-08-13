@@ -17,7 +17,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: `更新がちゃんとできるかのチェック.こっちはAPIゲートウェイを追加した ${message}`,
+                message: `samconfigの --forceをtrueにしてS 3お掃除.こっちはAPIゲートウェイを追加した ${message}`,
             }),
         };
     } catch (err) {
