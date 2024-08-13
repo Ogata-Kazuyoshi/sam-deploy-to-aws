@@ -32,15 +32,42 @@ Resources:
                 NotIpAddress:
                   aws:SourceIp: '13.114.22.14/32'
 
+  LambdaExecutionRoleWithDynamoDB:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ogata-lambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:CreateTable
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*'
+
   LambdaFunction1:
     Type: AWS::Serverless::Function
+    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::157094121738:role/ogata-lambdaExecutionRole
+      Role: !Ref LambdaExecutionRoleWithDynamoDB
       Events:
         HelloWorld:
           Type: Api
@@ -59,13 +86,15 @@ Resources:
 
   LambdaFunction2:
     Type: AWS::Serverless::Function
+    DependsOn: LambdaExecutionRoleWithDynamoDB
     Properties:
       CodeUri: lambda-function/
       Handler: hello2.lambdaHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::157094121738:role/ogata-lambdaExecutionRole
+      Role: !Ref LambdaExecutionRoleWithDynamoDB
+#      Role: arn:aws:iam::157094121738:role/ogata-lambdaExecutionRole
       Events:
         HelloWorld:
           Type: Api
