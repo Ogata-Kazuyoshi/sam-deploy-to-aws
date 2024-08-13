@@ -40,7 +40,8 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::${AWS::AccountId}:role/ogata-lambdaExecutionRole
+      Role:
+        Fn::Sub: 'arn:aws:iam::${AWS::AccountId}:role/ogata-lambdaExecutionRole'
       Events:
         HelloWorld:
           Type: Api
@@ -65,7 +66,8 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: arn:aws:iam::${AWS::AccountId}:role/ogata-lambdaExecutionRole
+      Role:
+        Fn::Sub: 'arn:aws:iam::${AWS::AccountId}:role/ogata-lambdaExecutionRole'
       Events:
         HelloWorld:
           Type: Api
