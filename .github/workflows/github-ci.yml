@@ -85,5 +85,5 @@ jobs:
         run: sam build
         working-directory: ./temp-hello-world
       - name: SAM deploy
-        run: sam deploy --s3-bucket ${{ vars.SAM_BUCKET_NAME }} --no-confirm-changeset --no-fail-on-empty-changeset
+        run: sam deploy --stack-name temp-ogata-sam --s3-bucket ${{ vars.SAM_BUCKET_NAME }} --capabilities CAPABILITY_IAM --no-confirm-changeset --no-fail-on-empty-changeset
         working-directory: ./temp-hello-world
