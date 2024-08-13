@@ -17,7 +17,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: `ええ感じに環境変数切り替えできてます。こっちはAPIゲートウェイを追加した ${message}`,
+                message: `むっちゃIP制限もええ感じ。ええ感じに環境変数切り替えできてます。こっちはAPIゲートウェイを追加した ${message}`,
             }),
         };
     } catch (err) {

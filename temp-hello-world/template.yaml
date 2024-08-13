@@ -32,6 +32,31 @@ Resources:
                 NotIpAddress:
                   aws:SourceIp: "13.114.22.14/32"
 
+  LambdaExecutionRoleWithDynamoDB:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:CreateTable
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                Resource: !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/*'
+
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -40,6 +65,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
@@ -64,6 +90,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
+      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
       Events:
         HelloWorld:
           Type: Api
@@ -88,5 +115,5 @@ Outputs:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
   HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Description: "Implicit IAM Role created by template.yaml"
+    Value: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
