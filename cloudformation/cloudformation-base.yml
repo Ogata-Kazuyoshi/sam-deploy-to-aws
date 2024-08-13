@@ -244,7 +244,9 @@ Resources:
                   - apigateway:PUT
                   - apigateway:DELETE
                   - apigateway:PATCH
-                Resource: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
+                Resource:
+                  - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
+                  - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
 
   LambdaExecutionRoleWithDynamoDB:
     Type: AWS::IAM::Role
