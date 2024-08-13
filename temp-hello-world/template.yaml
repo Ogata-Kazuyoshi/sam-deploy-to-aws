@@ -67,7 +67,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
+      Role: arn:aws:iam::157094121738:role/ogata-cloudformation-base-LambdaExecutionRoleWithDy-MCo77ITuvbYs
       Events:
         HelloWorld:
           Type: Api
@@ -94,7 +94,7 @@ Resources:
       Runtime: nodejs18.x
       Architectures:
         - x86_64
-      Role: !GetAtt LambdaExecutionRoleWithDynamoDB.Arn
+      Role: arn:aws:iam::157094121738:role/ogata-cloudformation-base-LambdaExecutionRoleWithDy-MCo77ITuvbYs
       Events:
         HelloWorld:
           Type: Api
